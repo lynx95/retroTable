@@ -12,7 +12,7 @@ app.use((req, res) => {
 	return res.end(renderHTML(componentHTML));
 });
 
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8020' : '/';
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8090' : '/';
 
 function renderHTML(componentHTML) {
 	return `
