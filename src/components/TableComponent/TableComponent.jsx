@@ -123,7 +123,6 @@ class TableComponent extends Component {
 	};
 
 	moveCard = (dragIndex, hoverIndex) => {
-		console.log(dragIndex, hoverIndex);
 		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
 
@@ -135,6 +134,10 @@ class TableComponent extends Component {
 				],
 			},
 		}));
+	};
+
+	handleChange = (value) => {
+		console.log(value.target.value);
 	};
 
 	render() {
@@ -155,7 +158,9 @@ class TableComponent extends Component {
 			<div className={this.getClassName()} style={{backgroundColor: this.props.color, backgroundImage: this.state.img }}>
 				<div className='componentName'>{this.state.name}</div>
 				<div className='componentBody'>
-					<div className='addNewRow' onClick={this.onClickAddNewRow}>+</div>
+					<div className='addNewRow' onClick={this.onClickAddNewRow}><span className="addRowPlus">+</span>
+						<input type="text" className='inputComponent' onChange={this.handleChange} />
+					</div>
 					<div id={`rowWrap--${this.props.tableId}`}>
 						{rows}
 						{this.addNewRow}
