@@ -26,59 +26,76 @@ class TableComponent extends Component {
 	constructor(props) {
 		super(props);
 
+
+	}
+
+	componentWillMount() {
 		this.state =  {
 			cards: [
 				{
 					id: 1,
-					text: 'Ништяк все, лучше не бывает!'
+					text: 'Ништяк все, лучше не бывает!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше быть не может456!'
+					id: 5,
+					text: 'Ништяк все, лучше быть не может456!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше не бывает4!'
+					id: 6,
+					text: 'Ништяк все, лучше не бывает4!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше быть не может!'
+					id: 7,
+					text: 'Ништяк все, лучше быть не может!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше не бывает!'
+					id: 8,
+					text: 'Ништяк все, лучше не бывает!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше быть не может!'
+					id: 9,
+					text: 'Ништяк все, лучше быть не может!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше не бывает!'
+					id: 10,
+					text: 'Ништяк все, лучше не бывает!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше быть не может! 123'
+					id: 11,
+					text: 'Ништяк все, лучше быть не может! 123',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше не бывает!'
+					id: 12,
+					text: 'Ништяк все, лучше не бывает!',
+					parentId: 1
 				},
 				{
-					id: 1,
-					text: 'Ништяк все, лучше быть не может!'
+					id: 13,
+					text: 'Ништяк все, лучше быть не может!',
+					parentId: 1
 				},
 				{
 					id: 2,
-					text: 'Есть что поправить'
+					text: 'Есть что поправить',
+					parentId: 2
 				},
 				{
 					id: 3,
-					text: 'А почему бы не попробовать'
+					text: 'А почему бы не попробовать',
+					parentId: 3
 				},
 				{
 					id: 4,
-					text: 'Подвисло чот'
+					text: 'Подвисло чот',
+					parentId: 4
 				}
 			],
 			name: this.props.name,
@@ -101,11 +118,12 @@ class TableComponent extends Component {
 	addNewRow = () => {
 		if (this.state.click) {
 			this.setState({ click: false });
-			return <RowComponent text='Новая сторока' id={this.props.tsbleId}/>;
+			return <RowComponent text='Новая сторока' id={this.props.tableId}/>;
 		}
 	};
 
 	moveCard = (dragIndex, hoverIndex) => {
+		console.log(dragIndex, hoverIndex);
 		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
 
@@ -121,10 +139,8 @@ class TableComponent extends Component {
 
 	render() {
 		const { cards } = this.state;
-
 		let rows = cards.map((card, i) => {
-			console.log(card);
-			//if (card.id === this.props.tableId) {
+			if (card.parentId === this.props.tableId) {
 				return <Card
 					key={card.id}
 					index={i}
@@ -132,7 +148,7 @@ class TableComponent extends Component {
 					text={card.text}
 					moveCard={this.moveCard}
 				/>
-			//}
+			}
 		});
 
 		return (
@@ -142,7 +158,7 @@ class TableComponent extends Component {
 					<div className='addNewRow' onClick={this.onClickAddNewRow}>+</div>
 					<div id={`rowWrap--${this.props.tableId}`}>
 						{rows}
-						{this.addNewRow()}
+						{this.addNewRow}
 					</div>
 				</div>
 			</div>

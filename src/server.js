@@ -12,7 +12,7 @@ app.use((req, res) => {
 	return res.end(renderHTML(componentHTML));
 });
 
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8090' : '/';
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8010' : '/';
 
 function renderHTML(componentHTML) {
 	return `
@@ -32,7 +32,7 @@ function renderHTML(componentHTML) {
   `;
 }
 
-const PORT = process.env.PORT || 23071;
+const PORT = process.env.PORT || 1003;
 
 app.listen(PORT, () => {
 	console.log(`Server listening on: ${PORT}`);
