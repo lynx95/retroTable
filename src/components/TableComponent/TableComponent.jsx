@@ -1,7 +1,11 @@
 import React, { PropTypes, Component } from 'react';
+import update from 'immutability-helper';
 import classnames from 'classnames/bind';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import style from './TableComponent.less';
+import Card from './Card';
 import RowComponent from './RowComponent';
 
 const propTypes = {
@@ -17,11 +21,66 @@ const defaultProps = {
 
 let cn = classnames.bind(style);
 
+@DragDropContext(HTML5Backend)
 class TableComponent extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.state =  {
+			cards: [
+				{
+					id: 1,
+					text: 'Ништяк все, лучше не бывает!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше быть не может456!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше не бывает4!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше быть не может!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше не бывает!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше быть не может!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше не бывает!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше быть не может! 123'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше не бывает!'
+				},
+				{
+					id: 1,
+					text: 'Ништяк все, лучше быть не может!'
+				},
+				{
+					id: 2,
+					text: 'Есть что поправить'
+				},
+				{
+					id: 3,
+					text: 'А почему бы не попробовать'
+				},
+				{
+					id: 4,
+					text: 'Подвисло чот'
+				}
+			],
 			name: this.props.name,
 			img: `url(./../../img/${this.props.img})`,
 			click: false
@@ -36,7 +95,6 @@ class TableComponent extends Component {
 
 
 	onClickAddNewRow = (data) => {
-		console.log(this);
 		this.setState({ click: true });
 	};
 
@@ -47,39 +105,34 @@ class TableComponent extends Component {
 		}
 	};
 
-	//Todo заменить на реальные данные с базы данных
-	getDataFromServer = () => {
-		return [{
-				id: 1,
-				text: 'Ништяк все, лучше не бывает!'
+	moveCard = (dragIndex, hoverIndex) => {
+		const { cards } = this.state;
+		const dragCard = cards[dragIndex];
+
+		this.setState(update(this.state, {
+			cards: {
+				$splice: [
+					[dragIndex, 1],
+					[hoverIndex, 0, dragCard],
+				],
 			},
-			{
-				id: 1,
-				text: 'Ништяк все, лучше быть не может!'
-			},
-			{
-				id: 2,
-				text: 'Есть что поправить'
-			},
-			{
-				id: 3,
-				text: 'А почему бы не попробовать'
-			},
-			{
-				id: 4,
-				text: 'Подвисло чот'
-			}
-		]
+		}));
 	};
 
-
 	render() {
-		const data = this.getDataFromServer();
+		const { cards } = this.state;
 
-		let rows = data.map((res) => {
-			if (res.id === this.props.tableId) {
-				return <RowComponent text={res.text}/>
-			}
+		let rows = cards.map((card, i) => {
+			console.log(card);
+			//if (card.id === this.props.tableId) {
+				return <Card
+					key={card.id}
+					index={i}
+					id={card.id}
+					text={card.text}
+					moveCard={this.moveCard}
+				/>
+			//}
 		});
 
 		return (

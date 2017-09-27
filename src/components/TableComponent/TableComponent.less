@@ -3,10 +3,43 @@
 	width: 50%;
 	height: 50%;
 	min-height: 350px;
+	max-height: 350px;
 	border-collapse: collapse;
 	border: 1px solid #eee;
 	padding: 10px;
+	overflow-y: scroll;
 }
 .addNewRow {
 	cursor: pointer;
+}
+::-webkit-scrollbar-button {
+	background-image: url('');
+	background-repeat: no-repeat;
+	width: 10px;
+	height: 0;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #ecedee
+}
+
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	background-color: #6dc0c8;
+}
+
+::-webkit-scrollbar-thumb:hover{
+	background-color: #56999f;
+}
+
+::-webkit-resizer{
+	background-image: url('');
+	background-repeat: no-repeat;
+	width: 10px;
+	height: 0;
+}
+
+::-webkit-scrollbar{
+	width: 10px;
 }
