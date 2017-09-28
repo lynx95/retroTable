@@ -11,6 +11,8 @@
 }
 .addNewRow {
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 }
 .componentName {
 	position: fixed;
@@ -31,10 +33,22 @@
 	margin-bottom: 20px;
 	width: 90%;
 	font-size: 16px;
+	&{
+		:active, :hover {
+			border: none;
+		}
+	}
 }
 .addRowPlus {
-	position: absolute;
+	position: relative;
 	font-size: 20px;
+	background: #6dc0c8;
+	color: #fff;
+	padding: 5px 15px;
+	border-radius: 5px;
+}
+.addRowPlus:hover {
+	background: #299CDA;
 }
 ::-webkit-scrollbar-button {
 	background-image: url('');

@@ -3,20 +3,22 @@ import update from 'immutability-helper';
 import classnames from 'classnames/bind';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import _ from 'underscore';
 
 import style from './TableComponent.less';
 import Card from './Card';
-import RowComponent from './RowComponent';
 
 const propTypes = {
 	name: PropTypes.string,
-	color: PropTypes.string
+	color: PropTypes.string,
+	value: PropTypes.string
 };
 
 const defaultProps = {
 	name: 'Название раздела',
 	color: 'blue',
-	img: 'default.svg'
+	img: 'default.svg',
+	value: ''
 };
 
 let cn = classnames.bind(style);
@@ -25,8 +27,6 @@ let cn = classnames.bind(style);
 class TableComponent extends Component {
 	constructor(props) {
 		super(props);
-
-
 	}
 
 	componentWillMount() {
@@ -100,25 +100,35 @@ class TableComponent extends Component {
 			],
 			name: this.props.name,
 			img: `url(./../../img/${this.props.img})`,
-			click: false
+			click: false,
+			value: ''
 		};
 	}
 
-
+	//Todo это в будущем, в процессе
 	onChangeName = (name) => {
 		console.log(name);
 	};
 
 
-
-	onClickAddNewRow = (data) => {
+	onClickAddNewRow = () => {
 		this.setState({ click: true });
 	};
 
 	addNewRow = () => {
-		if (this.state.click) {
-			this.setState({ click: false });
-			return <RowComponent text='Новая сторока' id={this.props.tableId}/>;
+		if (this.state.value) {
+			const {cards} = this.state;
+			const maxIndex = _.max(cards, (card) => card.id);
+
+			cards.push({
+				id: maxIndex.id + 1,
+				text: this.state.value,
+				parentId: this.props.tableId
+			});
+
+			this.setState({
+				cards
+			});
 		}
 	};
 
@@ -136,8 +146,8 @@ class TableComponent extends Component {
 		}));
 	};
 
-	handleChange = (value) => {
-		console.log(value.target.value);
+	handleChange = (e) => {
+		this.setState({ value: e.target.value });
 	};
 
 	render() {
@@ -158,12 +168,11 @@ class TableComponent extends Component {
 			<div className={this.getClassName()} style={{backgroundColor: this.props.color, backgroundImage: this.state.img }}>
 				<div className='componentName'>{this.state.name}</div>
 				<div className='componentBody'>
-					<div className='addNewRow' onClick={this.onClickAddNewRow}><span className="addRowPlus">+</span>
-						<input type="text" className='inputComponent' onChange={this.handleChange} />
+					<div className='addNewRow'>
+						<span className="addRowPlus" onClick={this.addNewRow}>+</span><input type="text" className='inputComponent' onChange={this.handleChange} />
 					</div>
 					<div id={`rowWrap--${this.props.tableId}`}>
 						{rows}
-						{this.addNewRow}
 					</div>
 				</div>
 			</div>

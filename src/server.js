@@ -32,7 +32,7 @@ function renderHTML(componentHTML) {
   `;
 }
 
-const PORT = process.env.PORT || 1003;
+const PORT = process.env.PORT || 1004;
 
 app.listen(PORT, () => {
 	console.log(`Server listening on: ${PORT}`);
