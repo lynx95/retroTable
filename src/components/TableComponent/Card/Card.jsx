@@ -11,6 +11,7 @@ const cardSource = {
 		return {
 			id: props.id,
 			index: props.index,
+			parentId: props.parentId
 		};
 	},
 };
@@ -18,11 +19,17 @@ const cardSource = {
 const cardTarget = {
 	hover(props, monitor, component) {
 		const dragIndex = monitor.getItem().index;
-		const hoverIndex = props.index;
+		let hoverIndex = props.index;
+		const dragParent = monitor.getItem().parentId;
+		const hoverParent = props.parentId;
 
-		// Don't replace items with themselves
+		// Don't replace items with themselves in one box
 		if (dragIndex === hoverIndex) {
-			return;
+			if (dragParent !== hoverParent) {
+				hoverIndex++;
+			} else {
+				return;
+			}
 		}
 
 		// Determine rectangle on screen
@@ -36,6 +43,7 @@ const cardTarget = {
 
 		// Get pixels to the top
 		const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
 
 		// Only perform the move when the mouse has crossed half of the items height
 		// When dragging downwards, only move when the cursor is below 50%
@@ -52,7 +60,7 @@ const cardTarget = {
 		}
 
 		// Time to actually perform the action
-		props.moveCard(dragIndex, hoverIndex);
+		props.moveCard(dragIndex, hoverIndex, dragParent, hoverParent);
 
 		// Note: we're mutating the monitor item here!
 		// Generally it's better to avoid mutations,
@@ -62,7 +70,7 @@ const cardTarget = {
 	},
 };
 
-@DropTarget(ItemTypes.CARD, cardTarget, connect => ({
+@DropTarget(ItemTypes.CARD, cardTarget, (connect, monitor) => ({
 	connectDropTarget: connect.dropTarget(),
 }))
 @DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({

@@ -29,6 +29,13 @@ class TableComponent extends Component {
 		super(props);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		const items = nextProps;
+		this.setState({
+			items
+		});
+	}
+
 	componentWillMount() {
 		this.state =  {
 			cards: [
@@ -39,12 +46,12 @@ class TableComponent extends Component {
 				},
 				{
 					id: 5,
-					text: 'Ништяк все, лучше быть не может456!',
+					text: 'Ништяк все, лучше быть не может!',
 					parentId: 1
 				},
 				{
 					id: 6,
-					text: 'Ништяк все, лучше не бывает4!',
+					text: 'Ништяк все, лучше не бывает!',
 					parentId: 1
 				},
 				{
@@ -69,7 +76,7 @@ class TableComponent extends Component {
 				},
 				{
 					id: 11,
-					text: 'Ништяк все, лучше быть не может! 123',
+					text: 'Ништяк все, лучше быть не может!',
 					parentId: 1
 				},
 				{
@@ -139,9 +146,14 @@ class TableComponent extends Component {
 		});
 	};
 
-	moveCard = (dragIndex, hoverIndex) => {
+	moveCard = (dragIndex, hoverIndex, dragParent, hoverParent) => {
+
 		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
+
+		if (dragParent !== hoverParent) {
+			dragCard.parentId = hoverParent;
+		}
 
 		this.setState(update(this.state, {
 			cards: {
@@ -159,6 +171,8 @@ class TableComponent extends Component {
 
 	render() {
 		const { cards } = this.state;
+
+
 		let rows = cards.map((card, i) => {
 			if (card.parentId === this.props.tableId) {
 				return <Card
@@ -166,6 +180,7 @@ class TableComponent extends Component {
 					index={i}
 					id={card.id}
 					text={card.text}
+					parentId={card.parentId}
 					moveCard={this.moveCard}
 				    deleteCard={() => this.deleteCard(card.id)}
 				/>
@@ -186,6 +201,7 @@ class TableComponent extends Component {
 			</div>
 		);
 	}
+
 
 	getClassName() {
 		return cn({
