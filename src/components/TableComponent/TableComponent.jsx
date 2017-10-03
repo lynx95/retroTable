@@ -111,10 +111,6 @@ class TableComponent extends Component {
 	};
 
 
-	onClickAddNewRow = () => {
-		this.setState({ click: true });
-	};
-
 	addNewRow = () => {
 		if (this.state.value) {
 			const {cards} = this.state;
@@ -127,9 +123,20 @@ class TableComponent extends Component {
 			});
 
 			this.setState({
-				cards
+				cards,
+				value: ''
 			});
 		}
+	};
+
+	deleteCard = (id) => {
+		const { cards } = this.state;
+
+		//Todo реальный запрос на удаление из базы
+		const updateCards = _.filter(cards, (card) => card.id !== id);
+		this.setState({
+			cards: updateCards
+		});
 	};
 
 	moveCard = (dragIndex, hoverIndex) => {
@@ -160,6 +167,7 @@ class TableComponent extends Component {
 					id={card.id}
 					text={card.text}
 					moveCard={this.moveCard}
+				    deleteCard={() => this.deleteCard(card.id)}
 				/>
 			}
 		});
@@ -169,7 +177,7 @@ class TableComponent extends Component {
 				<div className='componentName'>{this.state.name}</div>
 				<div className='componentBody'>
 					<div className='addNewRow'>
-						<span className="addRowPlus" onClick={this.addNewRow}>+</span><input type="text" className='inputComponent' onChange={this.handleChange} />
+						<span className="addRowPlus" onClick={this.addNewRow}>+</span><input type="text" value={this.state.value} className='inputComponent' onChange={this.handleChange} />
 					</div>
 					<div id={`rowWrap--${this.props.tableId}`}>
 						{rows}

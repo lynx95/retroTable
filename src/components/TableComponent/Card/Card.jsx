@@ -3,14 +3,8 @@ import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from './ItemTypes';
+import './Card.less';
 
-const style = {
-	padding: '0.5rem 1rem',
-	marginBottom: '.5rem',
-	backgroundColor: 'white',
-	borderRadius: '5px',
-	cursor: 'move',
-};
 
 const cardSource = {
 	beginDrag(props) {
@@ -84,6 +78,12 @@ export default class Card extends Component {
 		id: PropTypes.any.isRequired,
 		text: PropTypes.string.isRequired,
 		moveCard: PropTypes.func.isRequired,
+		deleteCard: PropTypes.func.isRequired
+	};
+
+	handlerClick = (e) => {
+		e.preventDefault();
+		this.props.deleteCard();
 	};
 
 	render() {
@@ -91,9 +91,10 @@ export default class Card extends Component {
 		const opacity = isDragging ? 0 : 1;
 
 		return connectDragSource(connectDropTarget(
-			<div style={{ ...style, opacity }}>
-				{text}
-			</div>,
+			<div className='cardDraggable' style={{opacity}}>
+				<span>{text}</span>
+				<span onClick={this.handlerClick} className='cardDelete'/>
+			</div>
 		));
 	}
 }
