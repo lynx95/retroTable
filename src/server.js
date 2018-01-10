@@ -2,7 +2,7 @@ import express  from 'express';
 import React    from 'react';
 import ReactDom from 'react-dom/server';
 import db from './database';
-import App      from 'components/App';
+import App from 'components/App';
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use((req, res) => {
 	return res.end(renderHTML(componentHTML));
 });
 
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8010' : '/';
+const assetUrl = 'http://localhost:8050';
 
 function renderHTML(componentHTML) {
 	return `
@@ -32,7 +32,7 @@ function renderHTML(componentHTML) {
   `;
 }
 
-const PORT = process.env.PORT || 1004;
+const PORT = process.env.PORT || 6006;
 
 app.listen(PORT, () => {
 	console.log(`Server listening on: ${PORT}`);

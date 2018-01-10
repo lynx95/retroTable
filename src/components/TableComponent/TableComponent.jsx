@@ -11,7 +11,8 @@ import Card from './Card';
 const propTypes = {
 	name: PropTypes.string,
 	color: PropTypes.string,
-	value: PropTypes.string
+	value: PropTypes.string,
+	moveCards: PropTypes.func
 };
 
 const defaultProps = {
@@ -29,84 +30,10 @@ class TableComponent extends Component {
 		super(props);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const items = nextProps;
-		this.setState({
-			items
-		});
-	}
-
 	componentWillMount() {
 		this.state =  {
-			cards: [
-				{
-					id: 1,
-					text: 'Ништяк все, лучше не бывает!',
-					parentId: 1
-				},
-				{
-					id: 5,
-					text: 'Ништяк все, лучше быть не может!',
-					parentId: 1
-				},
-				{
-					id: 6,
-					text: 'Ништяк все, лучше не бывает!',
-					parentId: 1
-				},
-				{
-					id: 7,
-					text: 'Ништяк все, лучше быть не может!',
-					parentId: 1
-				},
-				{
-					id: 8,
-					text: 'Ништяк все, лучше не бывает!',
-					parentId: 1
-				},
-				{
-					id: 9,
-					text: 'Ништяк все, лучше быть не может!',
-					parentId: 1
-				},
-				{
-					id: 10,
-					text: 'Ништяк все, лучше не бывает!',
-					parentId: 1
-				},
-				{
-					id: 11,
-					text: 'Ништяк все, лучше быть не может!',
-					parentId: 1
-				},
-				{
-					id: 12,
-					text: 'Ништяк все, лучше не бывает!',
-					parentId: 1
-				},
-				{
-					id: 13,
-					text: 'Ништяк все, лучше быть не может!',
-					parentId: 1
-				},
-				{
-					id: 2,
-					text: 'Есть что поправить',
-					parentId: 2
-				},
-				{
-					id: 3,
-					text: 'А почему бы не попробовать',
-					parentId: 3
-				},
-				{
-					id: 4,
-					text: 'Подвисло чот',
-					parentId: 4
-				}
-			],
+			cards: this.props.cards,
 			name: this.props.name,
-			img: `url(./../../img/${this.props.img})`,
 			click: false,
 			value: ''
 		};
@@ -151,8 +78,9 @@ class TableComponent extends Component {
 		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
 
-		if (dragParent !== hoverParent) {
-			dragCard.parentId = hoverParent;
+		if (!dragCard) {
+			this.props.moveCards(dragIndex, hoverIndex, dragParent, hoverParent);
+			return;
 		}
 
 		this.setState(update(this.state, {
@@ -188,11 +116,11 @@ class TableComponent extends Component {
 		});
 
 		return (
-			<div className={this.getClassName()} style={{backgroundColor: this.props.color, backgroundImage: this.state.img }}>
+			<div className={this.getClassName()} style={{backgroundColor: this.props.color }}>
 				<div className='componentName'>{this.state.name}</div>
 				<div className='componentBody'>
 					<div className='addNewRow'>
-						<span className="addRowPlus" onClick={this.addNewRow}>+</span><input type="text" value={this.state.value} className='inputComponent' onChange={this.handleChange} />
+						<span className='addRowPlus' onClick={this.addNewRow}>+</span><input type="text" value={this.state.value} className='inputComponent' onChange={this.handleChange} />
 					</div>
 					<div id={`rowWrap--${this.props.tableId}`}>
 						{rows}
